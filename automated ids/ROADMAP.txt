@@ -1,0 +1,38 @@
+# HoneyHiest: Future Feature Roadmap
+
+This document outlines potential enhancements and new modules to upgrade HoneyHiest from a basic monitor to a full-scale Enterprise SOAR & Honeypot platform.
+
+## 1. Advanced Notification & Alerting
+- [x] **Slack/Discord**: Instant push notifications when a critical block occurs.
+- [ ] **Email Alerts**: Daily or weekly PDF security summaries.
+- [ ] **Custom Siren/Audio Alerts**: Optional dashboard sound effects for "Critical Level" threats.
+
+## 2. Enhanced Honeypot Modules
+- [x] **HTTP High-Interaction Honeypot**: A fake login portal that captures phished credentials.
+- [x] **MySQL/Postgres Decoys**: Fake database ports that log unauthorized queries.
+- [x] **RDP/VNC Decoys**: Capture port hits for remote desktop services.
+- [x] **Canary Files**: "Honey-tokens" (fake Excel files) that alert you if they are modified.
+
+## 3. Threat Intelligence Integration
+- [x] **AbuseIPDB Integration**: Automatically check if an IP is already reported globally.
+- [x] **VirusTotal API**: Scan any files modified (detected by FIM) for malware.
+- [x] **Global Threat Map v2**: Animated flight paths showing live attacks hitting the server.
+
+## 4. Advanced Response & Forensics
+- [ ] **PCAP Auto-Capture**: Automatically record a 30-second packet capture when a port scan is detected.
+- [ ] **Snapshot Integration**: For cloud servers, trigger an OS snapshot when a root file is modified.
+- [ ] **Reverse-Proxy Defense**: Integration with Cloudflare/Nginx to block IPs at the edge.
+
+## 5. Visual Analytics & Reporting
+- [x] **Attack Trend Charts**: Line graphs showing "Attacks per Hour" vs "Blocked IPs".
+- [ ] **Heatmap of Doom**: World map colored by threat density.
+- [x] **Attacker Persona**: Behavioral profiling of attackers (e.g., "Aggressive Scanner").
+
+## 6. Access Control & Multi-Tenancy
+- [x] **Dashboard Login**: Proper OAuth/JWT authentication for the web UI.
+- [x] **Audit Logs**: Log which admin unblocked which IP and why.
+- [x] **Remote Agents**: A lightweight Python script to monitor OTHER servers and report back to this central dashboard.
+
+## 7. Intelligent Automation (AI)
+- [ ] **Anomaly Detection**: Use Machine Learning to detect irregular traffic patterns that don't match standard regex.
+- [ ] **Auto-Playbook Generation**: AI-suggested firewall rules based on attack vectors.

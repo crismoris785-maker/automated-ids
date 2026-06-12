@@ -1,0 +1,62 @@
+===================================================================
+      HONEYHIEST SOAR TOOL - FUTURE ROADMAP & NEW FEATURES
+===================================================================
+
+To evolve this tool into a professional-grade SOAR (Security Orchestration, 
+Automation, and Response) platform, we can implement the following:
+
+-------------------------------------------------------------------
+PHASE 1: ENHANCED DETECTION (The "Eyes")
+-------------------------------------------------------------------
+1. Web Attack Detection (WAF Lite)
+   - Monitor Nginx/Apache access logs for:
+     * SQL Injection attempts (' OR 1=1)
+     * XSS payloads (<script>)
+     * Directory Traversal (../../etc/passwd)
+   - Automatically block IPs scanning for common vulnerabilities.
+
+2. Port Scan Detection
+   - Use 'psad' or custom socket monitoring to detect if someone is
+     running 'nmap' against your server.
+
+3. File Integrity Monitoring (FIM)
+   - Alert the dashboard if critical system files (like /etc/passwd 
+     or /etc/shadow) are modified.
+
+-------------------------------------------------------------------
+PHASE 2: INTELLIGENT RESPONSE (The "Brain")
+-------------------------------------------------------------------
+4. Temporal Banning (Auto-Unblock)
+   - Add a 'jail' timer. Block an IP for 30 mins, 1 hour, or 24 hours,
+     then automatically remove the iptables rule.
+
+5. Whitelist Management
+   - A dashboard section to add "Protected IPs" (like your own) that 
+     the monitor will ignore even if password attempts fail.
+
+6. AbuseIPDB Integration (Deep Intelligence)
+   - Report attackers to global databases automatically to help
+     protect the rest of the internet.
+
+-------------------------------------------------------------------
+PHASE 3: DASHBOARD & ALERTS (The "Mouth")
+-------------------------------------------------------------------
+7. Instant Notifications
+   - Send messages to Discord, Telegram, or Slack the moment a 
+     high-risk attack is blocked.
+
+8. Interactive Firewall Management
+   - Add an "Unblock" button directly next to each incident in the 
+     web dashboard table.
+
+9. System Resource Monitor
+   - Display live CPU, RAM, and Network usage graphs on the 
+     dashboard to see if an attack is causing a "Denial of Service".
+
+-------------------------------------------------------------------
+PHASE 4: ADVANCED DECEPTION (The "Honey")
+-------------------------------------------------------------------
+10. SSH Honeypot
+    - Create a fake SSH port that accepts any password but logs 
+      every command the attacker types, showing it live in a 
+      "Hacker Terminal" view on the dashboard.

@@ -1,0 +1,107 @@
+===================================================================
+   AUTOMATED INCIDENT RESPONSE TOOL - KALI LINUX SETUP GUIDE
+===================================================================
+
+Follow these steps to configure and run the tool on your Kali Linux machine.
+
+-------------------------------------------------------------------
+STEP 1: INSTALL SYSTEM DEPENDENCIES
+-------------------------------------------------------------------
+Open your terminal and run the following commands to install Python 
+and MongoDB:
+
+sudo apt update
+sudo apt install -y python3 python3-pip mongodb-server
+
+# Start the MongoDB service
+sudo systemctl start mongodb
+sudo systemctl enable mongodb
+
+-------------------------------------------------------------------
+STEP 2: SETUP PROJECT FILES
+-------------------------------------------------------------------
+1. Copy the entire 'honeyhiest' folder to your Kali machine 
+   (e.g., to /home/kali/ir-tool).
+
+2. Navigate into the folder:
+   cd /home/kali/ir-tool
+
+-------------------------------------------------------------------
+STEP 3: INSTALL PYTHON LIBRARIES
+-------------------------------------------------------------------
+Install the required Python packages using pip:
+
+pip3 install -r requirements.txt
+
+-------------------------------------------------------------------
+STEP 4: CONFIGURE PERMISSIONS (IMPORTANT)
+-------------------------------------------------------------------
+The detection script (monitor.py) logs SSH attempts and executes 
+firewall rules. It needs permission to read /var/log/auth.log and 
+run 'iptables'.
+
+You can run the script with 'sudo', or configure specifics.
+For this guide, we will run the monitor script as root.
+
+-------------------------------------------------------------------
+STEP 5: RUN THE APPLICATION
+-------------------------------------------------------------------
+You need two separate terminal windows open.
+
+TERMINAL 1 - WEB DASHBOARD:
+Run the web interface.
+   
+cd /home/kali/ir-tool
+python3 app.py
+
+> Open your browser and go to: http://127.0.0.1:5000
+
+
+TERMINAL 2 - THREAT MONITOR:
+Run the detection engine with sudo (required for iptables).
+
+cd /home/kali/ir-tool
+sudo python3 monitor.py
+
+> You should see "Starting Auth Log Monitor..."
+
+-------------------------------------------------------------------
+STEP 6: TEST THE TOOL
+-------------------------------------------------------------------
+To verify it works without actually getting hacked, you can simulate 
+an SSH brute force attack by manually adding logs.
+
+Open a THIRD terminal and run this command 3 times:
+
+logger "Failed password for root from 192.168.1.100 port 22 ssh2"
+logger "Failed password for root from 192.168.1.100 port 22 ssh2"
+logger "Failed password for root from 192.168.1.100 port 22 ssh2"
+
+Observation:
+1. The 'monitor.py' terminal should say "THREAT DETECTED"
+2. It will execute: sudo iptables -A INPUT -s 192.168.1.100 -j DROP
+3. The Web Dashboard should instantly show the incident in the table.
+
+-------------------------------------------------------------------
+TROUBLESHOOTING
+-------------------------------------------------------------------
+- ERROR: "ModuleNotFoundError: No module named 'pymongo'"
+  Fix 1: You probably didn't install the libraries. Run:
+     sudo pip3 install -r requirements.txt
+
+  Fix 2: If Kali complains about "externally managed environment", 
+  run this instead:
+     sudo pip3 install -r requirements.txt --break-system-packages
+
+  Fix 3: Alternatively, install via system packages:
+     sudo apt install python3-flask python3-pymongo python3-socketio
+
+- If MongoDB fails to connect: 
+  Check status with: sudo systemctl status mongodb
+
+- If 'iptables' command fails:
+  Ensure you ran monitor.py with 'sudo'.
+
+- If logs aren't detected:
+  Check if your Kali uses /var/log/auth.log. Some newer versions 
+  might use journalctl, but standard file logging usually exists.

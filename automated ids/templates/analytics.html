@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics | HoneyHiest</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --bg-slate: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --danger: #f43f5e;
+            --success: #10b981;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding-bottom: 2rem;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .navbar {
+            backdrop-filter: blur(20px);
+            background: rgba(2, 6, 23, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            color: var(--accent) !important;
+        }
+
+        .chart-container {
+            height: 450px;
+            width: 100%;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-shield-lock-fill me-2 text-primary"></i>HONEYHIEST
+            </a>
+            <div class="ms-auto d-flex gap-4">
+                <a href="/security-lab" class="nav-link text-warning"><i class="bi bi-bug-fill me-1"></i> LAB</a>
+                <a href="/" class="nav-link"><i class="bi bi-speedometer2 me-1"></i> DASHBOARD</a>
+                <a href="/analytics" class="nav-link active"><i class="bi bi-graph-up-arrow me-1"></i> ANALYTICS</a>
+                <a href="/stream" class="nav-link"><i class="bi bi-broadcast me-1"></i> LOGS</a>
+                <a href="/settings" class="nav-link"><i class="bi bi-gear-fill me-1"></i> SETTINGS</a>
+                <button onclick="logout()"
+                    class="btn btn-link nav-link text-danger border-0 p-0 mb-0 ms-2 text-decoration-none"><i
+                        class="bi bi-box-arrow-right"></i> LOGOUT</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="fw-bold mb-5">Security Analytics</h1>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="glass stat-card">
+                    <div id="total-24h" class="stat-value">0</div>
+                    <div class="stat-label">Attacks (24h)</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass stat-card">
+                    <div id="peak-hour" class="stat-value">--:--</div>
+                    <div class="stat-label">Peak Threat Hour</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass stat-card">
+                    <div id="most-targeted" class="stat-value">--</div>
+                    <div class="stat-label">Most Targeted Service</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass stat-card">
+                    <div id="active-jails" class="stat-value">0</div>
+                    <div class="stat-label">Active Jails</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="glass p-4">
+                    <h5 class="mb-4 fw-bold"><i class="bi bi-graph-up-arrow me-2 text-accent"></i>Threat Velocity (Last
+                        24h)</h5>
+                    <div class="chart-container">
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Trends Chart
+        const ctx = document.getElementById('trendsChart').getContext('2d');
+        const trendsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Incidents per Hour',
+                    data: [],
+                    borderColor: '#38bdf8',
+                    backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#38bdf8',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { family: 'Outfit', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        cornerRadius: 10,
+                        displayColors: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 12 } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 12 } }
+                    }
+                }
+            }
+        });
+
+        async function loadAnalytics() {
+            const resTrend = await fetch('/api/stats/trends');
+            const dataTrend = await resTrend.json();
+
+            trendsChart.data.labels = dataTrend.labels;
+            trendsChart.data.datasets[0].data = dataTrend.counts;
+            trendsChart.update();
+
+            // Accurate counts from the server-side metrics
+            document.getElementById('total-24h').innerText = dataTrend.total_24h || 0;
+            document.getElementById('active-jails').innerText = dataTrend.active_jails || 0;
+
+            const maxCount = Math.max(...dataTrend.counts);
+            const peakIdx = dataTrend.counts.indexOf(maxCount);
+            document.getElementById('peak-hour').innerText = maxCount > 0 ? dataTrend.labels[peakIdx] : '--:--';
+
+            // Fetch recent incidents for service analytics
+            const resInc = await fetch('/api/incidents');
+            const dataInc = await resInc.json();
+
+            // Find most targeted service from the latest data
+            if (dataInc.length > 0) {
+                const types = dataInc.map(i => i.type);
+                const mostCommon = types.sort((a, b) =>
+                    types.filter(v => v === a).length - types.filter(v => v === b).length
+                ).pop();
+
+                // Clean up service names
+                let serviceName = mostCommon.split('_')[0].toUpperCase();
+                if (mostCommon.includes('sql')) serviceName = 'SQL';
+                if (mostCommon.includes('xss')) serviceName = 'XSS';
+                if (mostCommon.includes('fim')) serviceName = 'FIM';
+                if (mostCommon.includes('credential')) serviceName = 'PORTAL';
+
+                document.getElementById('most-targeted').innerText = serviceName;
+            }
+        }
+
+        async function logout() {
+            await fetch('/api/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+
+        loadAnalytics();
+        setInterval(loadAnalytics, 30000);
+    </script>
+</body>
+
+</html>

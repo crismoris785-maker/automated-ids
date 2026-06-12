@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | HoneyHiest</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --bg-slate: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --danger: #f43f5e;
+            --warning: #fbbf24;
+            --success: #10b981;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding-bottom: 2rem;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .navbar {
+            backdrop-filter: blur(20px);
+            background: rgba(2, 6, 23, 0.8);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            color: var(--accent) !important;
+        }
+
+        .form-control {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.25rem var(--accent-glow);
+            color: #fff;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #818cf8);
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .table {
+            color: #fff;
+        }
+
+        .table thead th {
+            border: none;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .table tr {
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .btn-delete {
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            border-radius: 8px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-shield-lock-fill me-2 text-primary"></i>HONEYHIEST
+            </a>
+            <div class="ms-auto d-flex gap-4">
+                <a href="/security-lab" class="nav-link text-warning"><i class="bi bi-bug-fill me-1"></i> LAB</a>
+                <a href="/" class="nav-link"><i class="bi bi-speedometer2 me-1"></i> DASHBOARD</a>
+                <a href="/analytics" class="nav-link"><i class="bi bi-graph-up-arrow me-1"></i> ANALYTICS</a>
+                <a href="/stream" class="nav-link"><i class="bi bi-broadcast me-1"></i> LOGS</a>
+                <a href="/settings" class="nav-link active"><i class="bi bi-gear-fill me-1"></i> SETTINGS</a>
+                <button onclick="logout()"
+                    class="btn btn-link nav-link text-danger border-0 p-0 mb-0 ms-2 text-decoration-none"><i
+                        class="bi bi-box-arrow-right"></i> LOGOUT</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row g-4 mt-2">
+        <div class="col-lg-12">
+            <div class="glass">
+                <h4 class="mb-4 fw-bold"><i class="bi bi-cpu me-2 text-primary"></i>Intelligence & Integrations</h4>
+                <p class="text-secondary small mb-4">Connect HoneyHiest to global threat intelligence feeds and alert
+                    channels.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label class="form-label text-secondary small text-uppercase fw-bold">AbuseIPDB API Key</label>
+                        <input type="password" id="abuse-key" class="form-control" placeholder="••••••••••••••••">
+                        <div class="form-text text-secondary x-small mt-1" style="font-size: 0.7rem;">Check global IP
+                            reputation.</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-secondary small text-uppercase fw-bold">VirusTotal API Key</label>
+                        <input type="password" id="vt-key" class="form-control" placeholder="••••••••••••••••">
+                        <div class="form-text text-secondary x-small mt-1" style="font-size: 0.7rem;">Scan modified
+                            files for malware.</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-secondary small text-uppercase fw-bold">Slack / Discord
+                            Webhook</label>
+                        <input type="text" id="slack-url" class="form-control"
+                            placeholder="https://hooks.slack.com/... or https://discord.com/api/webhooks/...">
+                        <div class="form-text text-secondary x-small mt-1" style="font-size: 0.7rem;">Instant intrusion
+                            notifications (Supports Slack & Discord).</div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-top border-secondary border-opacity-10 d-flex justify-content-end">
+                    <button onclick="saveSettings()" class="btn btn-primary">
+                        <i class="bi bi-save me-2"></i>SAVE INTEGRATIONS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-lg-5">
+            <div class="glass">
+                <h4 class="mb-4 fw-bold"><i class="bi bi-person-check-fill me-2 text-success"></i>Add to Whitelist
+                </h4>
+                <p class="text-secondary small mb-4">Whitelisted IPs will be ignored by the SOAR detection engine,
+                    even if they trigger alert patterns.</p>
+
+                <div class="mb-3">
+                    <label class="form-label text-secondary small text-uppercase fw-bold">IP Address</label>
+                    <input type="text" id="whitelist-ip" class="form-control font-mono" placeholder="192.168.1.50">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-secondary small text-uppercase fw-bold">Description /
+                        Purpose</label>
+                    <input type="text" id="whitelist-desc" class="form-control" placeholder="Admin Kali Machine">
+                </div>
+                <button onclick="addToWhitelist()" class="btn btn-primary w-100 mt-2">
+                    <i class="bi bi-plus-circle me-2"></i>PROTECT IP
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="glass">
+                <h4 class="mb-4 fw-bold"><i class="bi bi-shield-shaded me-2 text-accent"></i>Active Protections</h4>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>IP ADDRESS</th>
+                                <th>DESCRIPTION</th>
+                                <th>ADDED</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="whitelist-body">
+                            <!-- Loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row g-4 mt-2 mb-5">
+                <div class="col-lg-12">
+                    <div class="glass">
+                        <h4 class="mb-4 fw-bold"><i class="bi bi-journal-text me-2 text-warning"></i>System Audit Logs
+                        </h4>
+                        <p class="text-secondary small mb-4">Tracking all administrative actions and security overrides.
+                        </p>
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table align-middle">
+                                <thead class="sticky-top bg-dark">
+                                    <tr>
+                                        <th>TIMESTAMP</th>
+                                        <th>OPERATOR</th>
+                                        <th>ACTION</th>
+                                        <th>DETAILS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="audit-body">
+                                    <!-- Loaded via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            async function loadSettings() {
+                const res = await fetch('/api/settings');
+                const data = await res.json();
+                if (data.abuseipdb_key) document.getElementById('abuse-key').value = data.abuseipdb_key;
+                if (data.vt_key) document.getElementById('vt-key').value = data.vt_key;
+                if (data.slack_webhook) document.getElementById('slack-url').value = data.slack_webhook;
+            }
+
+            async function saveSettings() {
+                const abuse_key = document.getElementById('abuse-key').value;
+                const vt_key = document.getElementById('vt-key').value;
+                const slack_webhook = document.getElementById('slack-url').value;
+
+                const res = await fetch('/api/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        abuseipdb_key: abuse_key,
+                        vt_key: vt_key,
+                        slack_webhook: slack_webhook
+                    })
+                });
+
+                if (res.ok) {
+                    const btn = document.querySelector('button[onclick="saveSettings()"]');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="bi bi-check-circle me-2"></i>SETTINGS SAVED';
+                    btn.classList.replace('btn-primary', 'btn-success');
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.replace('btn-success', 'btn-primary');
+                    }, 3000);
+                }
+            }
+
+            async function loadWhitelist() {
+                const res = await fetch('/api/whitelist');
+                const data = await res.json();
+                const tbody = document.getElementById('whitelist-body');
+                tbody.innerHTML = '';
+
+                data.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                    <td class="font-mono text-accent fw-bold">${item.ip}</td>
+                    <td class="text-secondary">${item.description}</td>
+                    <td class="small opacity-50">${new Date(item.added_at * 1000).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn-delete" onclick="removeFromWhitelist('${item.ip}')">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </td>
+                `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            async function addToWhitelist() {
+                const ip = document.getElementById('whitelist-ip').value;
+                const desc = document.getElementById('whitelist-desc').value;
+
+                if (!ip) return alert('IP Address is required');
+
+                const res = await fetch('/api/whitelist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ip, description: desc })
+                });
+
+                if (res.ok) {
+                    document.getElementById('whitelist-ip').value = '';
+                    document.getElementById('whitelist-desc').value = '';
+                    loadWhitelist();
+                }
+            }
+
+            async function removeFromWhitelist(ip) {
+                if (!confirm(`Remove ${ip} from whitelist?`)) return;
+
+                const res = await fetch(`/api/whitelist?ip=${ip}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) loadWhitelist();
+            }
+
+            async function logout() {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = '/login';
+            }
+
+            async function loadAuditLogs() {
+                const res = await fetch('/api/audit-logs');
+                const data = await res.json();
+                const tbody = document.getElementById('audit-body');
+                tbody.innerHTML = '';
+
+                data.forEach(log => {
+                    const tr = document.createElement('tr');
+                    const time = new Date(log.timestamp * 1000).toLocaleString();
+                    tr.innerHTML = `
+                        <td class="font-mono small opacity-75">${time}</td>
+                        <td><span class="badge bg-primary bg-opacity-10 text-primary">${log.user}</span></td>
+                        <td class="fw-bold">${log.action}</td>
+                        <td class="text-secondary small">${log.details}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Initial load
+            loadWhitelist();
+            loadSettings();
+            loadAuditLogs();
+            setInterval(loadAuditLogs, 10000);
+        </script>
+</body>
+
+</html>

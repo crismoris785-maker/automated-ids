@@ -1,0 +1,10 @@
+flask
+flask-socketio
+pymongo
+pyyaml
+eventlet
+requests
+watchdog
+psutil
+paramiko
+flask-jwt-extended

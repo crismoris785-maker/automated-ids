@@ -1,0 +1,6 @@
+name: Block IP
+trigger: threat_detected
+actions:
+  - type: command
+    cmd: "sudo iptables -I INPUT -s {source_ip} -j DROP"
+    log_message: "Blocked IP {source_ip} via iptables"

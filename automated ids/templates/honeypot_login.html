@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Login | Secure Access Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --brand-primary: #2563eb;
+            --brand-dark: #1e293b;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            border-top: 4px solid var(--brand-primary);
+        }
+
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--brand-dark);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .form-control {
+            border-radius: 6px;
+            padding: 0.625rem;
+            border: 1px solid #d1d5db;
+        }
+
+        .form-control:focus {
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--brand-primary);
+            border: none;
+            padding: 0.625rem;
+            font-weight: 600;
+            border-radius: 6px;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 2rem;
+        }
+
+        .alert-system {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <div class="brand-logo">
+            <i class="bi bi-shield-check text-primary me-2"></i>HoneyHiest Portal
+        </div>
+
+        <div class="alert-system">
+            <i class="bi bi-info-circle-fill text-warning"></i>
+            <div style="font-size: 0.75rem; color: #92400e;">
+                This system is for authorized users only. All access, including unauthorized attempts, will be logged.
+            </div>
+        </div>
+
+        <form action="/portal/login" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Username / Email</label>
+                <input type="text" name="username" class="form-control" placeholder="j.doe@company.com" required>
+            </div>
+            <div class="mb-4">
+                <div class="d-flex justify-content-between">
+                    <label class="form-label">Password</label>
+                    <a href="#" class="text-decoration-none small text-primary">Forgot?</a>
+                </div>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+
+        <div class="footer-text">
+            &copy; 2026 HoneyHiest Enterprise Systems. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>
